@@ -7,6 +7,7 @@ public class BiggerInt extends BiggerNum {
 
     public BiggerInt() {
         super();
+        this.num.add(0);
     } // BiggerInt
 
     public BiggerInt(long n) {
@@ -19,7 +20,7 @@ public class BiggerInt extends BiggerNum {
 
     @Override
     public void add(BiggerNum n) {
-        // TODO Auto-generated method stub
+        
 
     } // add
 
@@ -41,5 +42,12 @@ public class BiggerInt extends BiggerNum {
 
     } // div
 
+    public String toString() {
+        String str = "";
+        for (int i : this.num) {
+            str += i;
+        } // for
+        return str;
+    } // toString
 
 } // BiggerInt
