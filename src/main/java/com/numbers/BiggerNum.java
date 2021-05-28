@@ -1,21 +1,49 @@
 package com.numbers;
+
 import java.util.ArrayList;
 
 /**
- * BiggerNum
+ * An abstract numerical data type able to handle numbers of magnitudes far greater than those
+ * allowed by default Java classes and data types. Each digit is stored as a <code>Character</code>
+ * in an <code>ArrayList</code>.
+ * 
+ * @author marlontn
  */
 public abstract class BiggerNum {
-    protected ArrayList<Integer> num;
+    protected ArrayList<Character> num;
 
+    /**
+     * Creates a new number.
+     */
     public BiggerNum() {
-        this.num = new ArrayList<Integer>();
+        this.num = new ArrayList<Character>();
     } // BiggerNum
 
-    public abstract void add(BiggerNum n); // add
+    /**
+     * Adds another number to this number
+     * 
+     * @param n the number to add
+     */
+    public abstract void add(BiggerNum n);
 
-    public abstract void sub(BiggerNum n); // sub
+    /**
+     * Subtracts another number from this number
+     * 
+     * @param n the number to subtract
+     */
+    public abstract void sub(BiggerNum n);
 
-    public abstract void mult(BiggerNum n); // multiply
+    /**
+     * Multiplies this number by another number
+     * 
+     * @param n the multiplier
+     */
+    public abstract void mult(BiggerNum n);
 
-    public abstract void div(BiggerNum n); // divide
+    /**
+     * Divides this number by another number
+     * 
+     * @param n the divisor
+     */
+    public abstract void div(BiggerNum n);
 } // BiggerNum
