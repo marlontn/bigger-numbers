@@ -16,7 +16,7 @@ public abstract class BiggerNum {
      * Creates a new number.
      */
     public BiggerNum() {
-        this.num = new ArrayList<Character>();
+        num = new ArrayList<Character>();
     } // BiggerNum
 
     /**

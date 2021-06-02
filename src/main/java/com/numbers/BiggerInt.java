@@ -14,7 +14,7 @@ public class BiggerInt extends BiggerNum {
      */
     public BiggerInt() {
         super();
-        this.num.add((char) 0);
+        num.add((char) 0);
     } // BiggerInt
 
     /**
@@ -25,8 +25,8 @@ public class BiggerInt extends BiggerNum {
     public BiggerInt(long n) {
         super();
         while (n > 0) {
-            this.num.add(0, (char) (n % 10));
-            n /= 10;
+            num.add(0, (char) (n % 10)); // adds last digit of n to num
+            n /= 10; // takes off n's last digit
         } // while
     } // BiggerInt
 
@@ -38,18 +38,28 @@ public class BiggerInt extends BiggerNum {
      */
     public BiggerInt(String n) throws NumberFormatException {
         super();
-        n.chars().forEach(c -> {
+        for (char c : n.toCharArray()) {
             if (Character.isDigit(c)) {
-                this.num.add((char) Character.getNumericValue(c));
+                num.add((char) Character.getNumericValue(c));
             } else {
                 throw new NumberFormatException("Could not convert String to an Integer");
             } // if-else
-        });
+        } // for-each
+        if (num.size() == 0) {
+            num.add((char) 0);
+        }  // if
     } // BiggerInt
 
     @Override
     public void add(BiggerNum n) {
-        // TODO Auto-Generated method stub
+        if (n instanceof BiggerInt) {
+
+        } else if (n instanceof BiggerDouble) {
+
+        } // if-else
+    } // add
+
+    public void add(BiggerInt n) {
 
     } // add
 
@@ -74,10 +84,9 @@ public class BiggerInt extends BiggerNum {
     @Override
     public String toString() {
         String str = "";
-        for (int i : this.num) {
+        for (int i : num) {
             str += i;
         } // for
         return str;
     } // toString
-
 } // BiggerInt
