@@ -11,12 +11,14 @@ import java.util.ArrayList;
  */
 public abstract class BiggerNum {
     protected ArrayList<Character> num;
+    protected char sign;
 
     /**
      * Creates a new number.
      */
     public BiggerNum() {
         num = new ArrayList<Character>();
+        sign = '0'; // positive
     } // BiggerNum
 
     /**

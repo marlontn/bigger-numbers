@@ -1,5 +1,7 @@
 package com.numbers;
 
+import java.util.Scanner;
+
 /**
  * Driver for the <code>com.numbers</code> package.
  * 
@@ -12,12 +14,20 @@ public class App {
      * @param args optional command-line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        BiggerInt n1 = new BiggerInt();
-        System.out.println(n1);
-        BiggerInt n2 = new BiggerInt(123456789);
-        System.out.println(n2);
-        BiggerInt n3 = new BiggerInt("123456789");
-        System.out.println(n3);
+        Scanner scan = new Scanner(System.in);
+
+        String input = "";
+        while (!(input.equals("q") || input.equals("quit"))) {
+            System.out.print("Enter a command: ");
+            input = scan.nextLine().toLowerCase();
+            String[] arr = input.split(" ");
+            if (arr[0].equals("i")) {
+                BiggerInt n = new BiggerInt(arr[1]);
+                System.out.println(n);
+            } else if (arr[0].equals("d")) {
+                BiggerDouble n = new BiggerDouble(arr[1]);
+                System.out.println(n);
+            } // if-else
+        } // while
     } // main
 } // App

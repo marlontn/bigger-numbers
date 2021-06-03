@@ -41,6 +41,10 @@ public class BiggerDouble extends BiggerNum {
     public BiggerDouble(String n) throws NumberFormatException {
         whole = new ArrayList<Character>();
         decimal = new ArrayList<Character>();
+        if (n.charAt(0) == '-') {
+            sign = '1';
+            n = n.substring(1);
+        } // if the number is negative
 
         boolean pass = true;
         for (char c : n.toCharArray()) {
@@ -91,6 +95,9 @@ public class BiggerDouble extends BiggerNum {
     @Override
     public String toString() {
         String str = "";
+        if (sign == '1') {
+            str += "-";
+        } // if number is negative
         for (int i : whole) {
             str += i;
         } // for

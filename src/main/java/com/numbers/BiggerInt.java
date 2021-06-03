@@ -23,11 +23,7 @@ public class BiggerInt extends BiggerNum {
      * @param n this integer's initial value
      */
     public BiggerInt(long n) {
-        super();
-        while (n > 0) {
-            num.add(0, (char) (n % 10)); // adds last digit of n to num
-            n /= 10; // takes off n's last digit
-        } // while
+        this(String.valueOf(n));
     } // BiggerInt
 
     /**
@@ -38,6 +34,11 @@ public class BiggerInt extends BiggerNum {
      */
     public BiggerInt(String n) throws NumberFormatException {
         super();
+        if (n.charAt(0) == '-') {
+            sign = '1';
+            n = n.substring(1);
+        } // if the number is negative
+
         for (char c : n.toCharArray()) {
             if (Character.isDigit(c)) {
                 num.add((char) Character.getNumericValue(c));
@@ -84,6 +85,9 @@ public class BiggerInt extends BiggerNum {
     @Override
     public String toString() {
         String str = "";
+        if (sign == '1') {
+            str += "-";
+        } // if number is negative
         for (int i : num) {
             str += i;
         } // for
