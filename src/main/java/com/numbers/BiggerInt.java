@@ -35,7 +35,7 @@ public class BiggerInt extends BiggerNum {
     public BiggerInt(String n) throws NumberFormatException {
         super();
         if (n.charAt(0) == '-') {
-            sign = '1';
+            sign = 1;
             n = n.substring(1);
         } // if the number is negative
 
@@ -49,6 +49,7 @@ public class BiggerInt extends BiggerNum {
         if (num.size() == 0) {
             num.add((char) 0);
         } // if
+        normalize();
     } // BiggerInt
 
     @Override
@@ -80,6 +81,15 @@ public class BiggerInt extends BiggerNum {
     } // div
 
     /**
+     * Removes leading zeros.
+     */
+    public void normalize() {
+        while (num.size() > 1 && num.get(0) == 0) {
+            num.remove(0);
+        } // while
+    } // normalize
+
+    /**
      * Gets this number's nth (0-based) digit.
      * 
      * @param n the desired position
@@ -101,7 +111,7 @@ public class BiggerInt extends BiggerNum {
     @Override
     public String toString() {
         String str = "";
-        if (sign == '1') {
+        if (sign == 1) {
             str += "-";
         } // if number is negative
         for (int i : num) {

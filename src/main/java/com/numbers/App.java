@@ -17,7 +17,7 @@ public class App {
         Scanner scan = new Scanner(System.in);
 
         String input = "";
-        while (!(input.equals("q") || input.equals("quit"))) {
+        while (!(input.equals("q") || input.equals("quit") || input.equals("exit"))) {
             System.out.print("Enter a command: ");
             input = scan.nextLine().toLowerCase();
             String[] arr = input.split(" ");

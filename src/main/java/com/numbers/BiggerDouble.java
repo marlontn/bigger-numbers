@@ -42,7 +42,7 @@ public class BiggerDouble extends BiggerNum {
         whole = new ArrayList<Character>();
         decimal = new ArrayList<Character>();
         if (n.charAt(0) == '-') {
-            sign = '1';
+            sign = 1;
             n = n.substring(1);
         } // if the number is negative
 
@@ -66,6 +66,7 @@ public class BiggerDouble extends BiggerNum {
         if (decimal.size() == 0) {
             decimal.add((char) 0);
         } // if
+        normalize();
     } // BiggerDouble
 
     @Override
@@ -91,6 +92,18 @@ public class BiggerDouble extends BiggerNum {
         // TODO Auto-generated method stub
 
     } // div
+
+    /**
+     * Removes leading zeros (pre-decimal point) and trailing zeros (post-decimal point).
+     */
+    public void normalize() {
+        while (whole.size() > 1 && whole.get(0) == 0) {
+            whole.remove(0);
+        } // while
+        while (decimal.size() > 1 && decimal.get(decimal.size() - 1) == 0) {
+            decimal.remove(decimal.size() - 1);
+        } // while
+    } // normalize
 
     /**
      * Gets this number's nth (0-based) whole digit (pre-decimal point).
@@ -142,7 +155,7 @@ public class BiggerDouble extends BiggerNum {
     @Override
     public String toString() {
         String str = "";
-        if (sign == '1') {
+        if (sign == 1) {
             str += "-";
         } // if number is negative
         for (int i : whole) {
