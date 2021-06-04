@@ -92,6 +92,53 @@ public class BiggerDouble extends BiggerNum {
 
     } // div
 
+    /**
+     * Gets this number's nth (0-based) whole digit (pre-decimal point).
+     * 
+     * @param n the desired position
+     * @return the digit at the given position
+     */
+    public int getWholeDigit(int n) {
+        return whole.get(n);
+    } // getWholeDigit
+
+    /**
+     * Gets this number's nth (0-based) decimal digit (post-decimal point).
+     * 
+     * @param n the desired position
+     * @return the digit at the given position
+     */
+    public int getDecimalDigit(int n) {
+        return decimal.get(n);
+    } // getDecimalDigit
+
+    /**
+     * Gets the total number of digits in this number.
+     * 
+     * @return the number of digits
+     */
+    public int getNumDigits() {
+        return whole.size() + decimal.size();
+    } // getNumDigits
+
+    /**
+     * Gets the total number of whole digits (pre-decimal point) in this number.
+     * 
+     * @return the number of digits
+     */
+    public int getNumWholes() {
+        return whole.size();
+    } // getNumWholes
+
+    /**
+     * Gets the total number of decimal digits (post-decimal point) in this number.
+     * 
+     * @return the number of digits
+     */
+    public int getNumDecimals() {
+        return decimal.size();
+    } // getNumDecimals
+
     @Override
     public String toString() {
         String str = "";

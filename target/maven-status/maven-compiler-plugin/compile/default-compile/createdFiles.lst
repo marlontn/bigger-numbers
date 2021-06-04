@@ -1,3 +1,4 @@
 com\numbers\App.class
+com\numbers\BiggerDouble.class
 com\numbers\BiggerInt.class
 com\numbers\BiggerNum.class

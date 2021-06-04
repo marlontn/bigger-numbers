@@ -48,39 +48,55 @@ public class BiggerInt extends BiggerNum {
         } // for-each
         if (num.size() == 0) {
             num.add((char) 0);
-        }  // if
+        } // if
     } // BiggerInt
 
     @Override
-    public void add(BiggerNum n) {
+    public <T extends BiggerNum> void add(T n) {
         if (n instanceof BiggerInt) {
-
+            return;
         } else if (n instanceof BiggerDouble) {
-
+            add(BiggerInt.valueOf((BiggerDouble) n));
         } // if-else
     } // add
 
-    public void add(BiggerInt n) {
-
-    } // add
 
     @Override
-    public void sub(BiggerNum n) {
+    public <T extends BiggerNum> void sub(T n) {
         // TODO Auto-generated method stub
 
     } // sub
 
     @Override
-    public void mult(BiggerNum n) {
+    public <T extends BiggerNum> void mult(T n) {
         // TODO Auto-generated method stub
 
     } // mult
 
     @Override
-    public void div(BiggerNum n) {
+    public <T extends BiggerNum> void div(T n) {
         // TODO Auto-generated method stub
 
     } // div
+
+    /**
+     * Gets this number's nth (0-based) digit.
+     * 
+     * @param n the desired position
+     * @return the digit at the given position
+     */
+    public int getDigit(int n) {
+        return num.get(n);
+    } // getDigit
+    
+    /**
+     * Gets the total number of digits in this number.
+     * 
+     * @return the number of digits
+     */
+    public int getNumDigits() {
+        return num.size();
+    } // getNumDigits
 
     @Override
     public String toString() {
@@ -93,4 +109,18 @@ public class BiggerInt extends BiggerNum {
         } // for
         return str;
     } // toString
+
+    /**
+     * Converts the given <code>BiggerDouble</code> into a BiggerInt.
+     * 
+     * @param n the number to convert
+     * @return the given number as a BiggerInt
+     */
+    public static BiggerInt valueOf(BiggerDouble n) {
+        BiggerInt num = new BiggerInt();
+        for (int i = 0; i < n.getNumWholes(); i++) {
+            num.num.add((char) n.getWholeDigit(i));
+        } // for
+        return new BiggerInt();
+    } // valueOf
 } // BiggerInt

@@ -26,26 +26,26 @@ public abstract class BiggerNum {
      * 
      * @param n the number to add
      */
-    public abstract void add(BiggerNum n);
+    public abstract <T extends BiggerNum> void add(T n);
 
     /**
      * Subtracts another number from this number
      * 
      * @param n the number to subtract
      */
-    public abstract void sub(BiggerNum n);
+    public abstract <T extends BiggerNum> void sub(T n);
 
     /**
      * Multiplies this number by another number
      * 
      * @param n the multiplier
      */
-    public abstract void mult(BiggerNum n);
+    public abstract <T extends BiggerNum> void mult(T n);
 
     /**
      * Divides this number by another number
      * 
      * @param n the divisor
      */
-    public abstract void div(BiggerNum n);
+    public abstract <T extends BiggerNum> void div(T n);
 } // BiggerNum
