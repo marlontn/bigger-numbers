@@ -125,11 +125,12 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
      * @return
      */
     public static BiggerInt add(final BiggerInt n, final BiggerInt... nums) {
+        BiggerInt res = new BiggerInt(n);
         for (BiggerInt x : nums) {
-            n.add(x);
+            res.add(x);
         } // for
-        n.normalize();
-        return n;
+        res.normalize();
+        return res;
     } // add
 
     @Override
@@ -185,6 +186,22 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
         } // if-else
         normalize();
     } // sub
+
+    /**
+     * Subtracts 0 or more given numbers from a given initial number.
+     * 
+     * @param n the number to subtract from
+     * @param nums the optional number(s) to be subtracted
+     * @return
+     */
+    public static BiggerInt sub(final BiggerInt n, final BiggerInt... nums) {
+        BiggerInt res = new BiggerInt(n);
+        for (BiggerInt x : nums) {
+            res.sub(x);
+        } // for
+        res.normalize();
+        return res;
+    } // add
 
     @Override
     public <T extends BiggerNum> void mult(final T n) {
