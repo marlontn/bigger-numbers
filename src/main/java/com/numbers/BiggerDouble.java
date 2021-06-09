@@ -103,6 +103,9 @@ public class BiggerDouble extends BiggerNum {
         while (decimal.size() > 1 && decimal.get(decimal.size() - 1) == 0) {
             decimal.remove(decimal.size() - 1);
         } // while
+        if (whole.get(0) == 0 && decimal.get(0) == 0 && sign == 1) {
+            sign = 0;
+        } // if there is a negative sign for zero
     } // normalize
 
     /**

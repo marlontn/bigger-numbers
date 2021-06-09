@@ -22,11 +22,44 @@ public class App {
             input = scan.nextLine().toLowerCase();
             String[] arr = input.split(" ");
             if (arr[0].equals("i")) {
-                BiggerInt n = new BiggerInt(arr[1]);
-                System.out.println(n);
+                BiggerInt n1 = new BiggerInt(arr[1]);
+                BiggerInt n2 = new BiggerInt(arr[2]);
+                System.out.println("n1: " + n1);
+                System.out.println("n2: " + n2);
+                switch (n1.compareTo(n2)) {
+                    case 1:
+                        System.out.println("n1 > n2");
+                        break;
+                    case -1:
+                        System.out.println("n1 < n2");
+                        break;
+                    default:
+                        System.out.println("n1 == n2");
+                } // switch
+                n1.add(n2);
+                System.out.println("n1 + n2: " + n1);
+                System.out.println("n2: " + n2);
+                n1.sub(n2);
+                System.out.println("n1: " + n1);
             } else if (arr[0].equals("d")) {
-                BiggerDouble n = new BiggerDouble(arr[1]);
-                System.out.println(n);
+                BiggerDouble n1 = new BiggerDouble(arr[1]);
+                BiggerDouble n2 = new BiggerDouble(arr[2]);
+                System.out.println("n1: " + n1);
+                System.out.println("n2: " + n2);
+                /*
+                switch (n1.compareTo(n2)) {
+                    case 1:
+                        System.out.println("n1 > n2");
+                        break;
+                    case -1:
+                        System.out.println("n1 < n2");
+                        break;
+                    default:
+                        System.out.println("n1 == n2");
+                } // switch
+                */
+                n1.add(n2);
+                System.out.println("n1 + n2:" + n1);
             } // if-else
         } // while
     } // main

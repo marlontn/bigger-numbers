@@ -18,7 +18,7 @@ public abstract class BiggerNum {
      */
     public BiggerNum() {
         num = new ArrayList<Character>();
-        sign = '0'; // positive
+        sign = 0; // positive
     } // BiggerNum
 
     /**
@@ -26,26 +26,26 @@ public abstract class BiggerNum {
      * 
      * @param n the number to add
      */
-    public abstract <T extends BiggerNum> void add(T n);
+    public abstract <T extends BiggerNum> void add(final T n);
 
     /**
      * Subtracts another number from this number
      * 
      * @param n the number to subtract
      */
-    public abstract <T extends BiggerNum> void sub(T n);
+    public abstract <T extends BiggerNum> void sub(final T n);
 
     /**
      * Multiplies this number by another number
      * 
      * @param n the multiplier
      */
-    public abstract <T extends BiggerNum> void mult(T n);
+    public abstract <T extends BiggerNum> void mult(final T n);
 
     /**
      * Divides this number by another number
      * 
      * @param n the divisor
      */
-    public abstract <T extends BiggerNum> void div(T n);
+    public abstract <T extends BiggerNum> void div(final T n);
 } // BiggerNum
