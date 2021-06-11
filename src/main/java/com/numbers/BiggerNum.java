@@ -40,7 +40,7 @@ public abstract class BiggerNum {
      * 
      * @param n the multiplier
      */
-    public abstract <T extends BiggerNum> void mult(final T n);
+    public abstract <T extends BiggerNum> void mul(final T n);
 
     /**
      * Divides this number by another number

@@ -82,10 +82,10 @@ public class BiggerDouble extends BiggerNum {
     } // sub
 
     @Override
-    public void mult(BiggerNum n) {
+    public void mul(BiggerNum n) {
         // TODO Auto-generated method stub
 
-    } // mult
+    } // mul
 
     @Override
     public void div(BiggerNum n) {

@@ -16,6 +16,9 @@ public class App {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
+        System.out.println("Welcome! Enter h to see a list of commands/operations or q to quit");
+        System.out.println();
+
         String input = "";
         while (!(input.equals("q") || input.equals("quit") || input.equals("exit"))) {
             System.out.print("Enter a command: ");
@@ -23,24 +26,52 @@ public class App {
             String[] arr = input.split(" ");
             if (arr[0].equals("i")) {
                 BiggerInt n1 = new BiggerInt(arr[1]);
-                BiggerInt n2 = new BiggerInt(arr[2]);
-                System.out.println("n1: " + n1);
-                System.out.println("n2: " + n2);
-                switch (n1.compareTo(n2)) {
-                    case 1:
-                        System.out.println("n1 > n2");
+                String[] op = {"yuh"};
+                while (true) {
+                    System.out.print("Enter an operation: ");
+                    op = scan.nextLine().toLowerCase().split(" ");
+                    if (op[0].equals("so")) {
                         break;
-                    case -1:
-                        System.out.println("n1 < n2");
-                        break;
-                    default:
-                        System.out.println("n1 == n2");
-                } // switch
-                n1.add(n2);
-                System.out.println("n1 + n2: " + n1);
-                System.out.println("n2: " + n2);
-                n1.sub(n2);
-                System.out.println("n1: " + n1);
+                    } // if
+                    BiggerInt n2 = new BiggerInt(op[1]);
+                    System.out.println("n1: " + n1);
+                    System.out.println("n2: " + n2);
+                    switch (op[0]) {
+                        case "+":
+                        case "add":
+                            n1.add(n2);
+                            System.out.println("n1 + n2: " + n1);
+                            break;
+                        case "-":
+                        case "sub":
+                            n1.sub(n2);
+                            System.out.println("n1 - n2: " + n1);
+                            break;
+                        case "*":
+                        case "x":
+                        case "mul":
+                            n1.mul(n2);
+                            System.out.println("n1 * n2: " + n1);
+                            break;
+                        case "/":
+                        case "div":
+                            n1.div(n2);
+                            System.out.println("n1 / n2: " + n1);
+                            break;
+                        case "comp":
+                            switch (n1.compareTo(n2)) {
+                                case 1:
+                                    System.out.println("n1 > n2");
+                                    break;
+                                case -1:
+                                    System.out.println("n1 < n2");
+                                    break;
+                                default:
+                                    System.out.println("n1 == n2");
+                            } // switch
+                            break;
+                    } // switch
+                } // while
             } else if (arr[0].equals("d")) {
                 BiggerDouble n1 = new BiggerDouble(arr[1]);
                 BiggerDouble n2 = new BiggerDouble(arr[2]);

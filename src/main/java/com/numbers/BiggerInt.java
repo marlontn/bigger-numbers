@@ -76,7 +76,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
                 /* (-num + x) = -(num + -x) = -(num - x) */
                 sign = 0;
                 sub(x);
-                sign = sign == 0 ? (char) 1 : (char) 0; // flips sign
+                sign = (char) (sign == 0 ? 1 : 0); // flips sign
             } else { // if signs are the same
                 /* (num + x) = (num + x) */
                 /* (-num + -x) = -(num + x), where the sign bit is already negative */
@@ -129,7 +129,6 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
         for (BiggerInt x : nums) {
             res.add(x);
         } // for
-        res.normalize();
         return res;
     } // add
 
@@ -146,13 +145,13 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
                 /* (-num - x) = -(num - -x) = -(num + x) */
                 sign = 0;
                 add(x);
-                sign = sign == 0 ? (char) 1 : (char) 0; // flips sign
+                sign = (char) (sign == 0 ? 1 : 0); // flips sign
             } else if (sign == 1 && x.sign == 1) { // if both numbers are negative
                 /* (-num - -x) = -(num - x) */
                 sign = 0;
                 x.sign = 0;
                 sub(x);
-                sign = sign == 0 ? (char) 1 : (char) 0; // flips sign
+                sign = (char) (sign == 0 ? 1 : 0); // flips sign
                 x.sign = 1; // unnecessary but done for consistency
             } else { // if both numbers are positive
                 /* (num - x) = (num - x) */
@@ -162,7 +161,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
                     copy.sub(this);
                     num.clear();
                     num.addAll(copy.num);
-                    sign = x.sign == 0 ? (char) 1 : (char) 0; // flips sign
+                    sign = (char) (x.sign == 0 ? 1 : 0); // flips sign
                 } else { // if this number is greater than or equal to n
                     int l1 = getNumDigits() - 1;
                     int l2 = x.getNumDigits() - 1;
@@ -199,15 +198,60 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
         for (BiggerInt x : nums) {
             res.sub(x);
         } // for
-        res.normalize();
         return res;
-    } // add
+    } // sub
 
     @Override
-    public <T extends BiggerNum> void mult(final T n) {
-        // TODO Auto-generated method stub
+    public <T extends BiggerNum> void mul(final T n) {
+        if (n instanceof BiggerInt) {
+            BiggerInt x = (BiggerInt) n;
+            BiggerInt res = new BiggerInt();
+            for (int l1 = getNumDigits(); l1 > 0; l1--) {
+                BiggerInt temp = new BiggerInt();
+                temp.num.clear(); // gets rid of extra zero
+                int a = num.get(l1 - 1);
+                int carry = 0;
+                for (int l2 = x.getNumDigits(); l2 > 0; l2--) {
+                    int b = x.num.get(l2 - 1);
+                    int c = a * b;
+                    if (carry > 0) {
+                        c += carry;
+                        carry = 0;
+                    } // if there is a carry bit from the previous multiplication
+                    temp.num.add(0, (char) (c % 10));
+                    carry = c / 10; // max value of c is 89 so this should work
+                } // for
+                if (carry > 0) {
+                    temp.num.add(0, (char) carry);
+                } // if there is a leftover carry bit
+                for (int i = getNumDigits(); i > l1; i--) {
+                    temp.num.add((char) 0); // pads with zeroes to reflect shift
+                } // for
+                res.add(temp);
+            } // for
+            num.clear();
+            num.addAll(res.num);
+            sign = (char) (sign == x.sign ? 0 : 1); // positive if equal, negative otherwise
+        } else {
+            mul(BiggerInt.valueOf(n));
+        } // if-else
+        normalize();
+    } // mul
 
-    } // mult
+    /**
+     * Multiplies 0 or more given numbers with a given initial number.
+     * 
+     * @param n the number to multiply to
+     * @param nums the optional number(s) to multiply with
+     * @return
+     */
+    public static BiggerInt mul(final BiggerInt n, final BiggerInt... nums) {
+        BiggerInt res = new BiggerInt(n);
+        for (BiggerInt x : nums) {
+            res.mul(x);
+        } // for
+        return res;
+    } // sub
 
     @Override
     public <T extends BiggerNum> void div(final T n) {
@@ -256,10 +300,8 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
         BiggerInt res = new BiggerInt();
         if (n instanceof BiggerDouble) {
             BiggerDouble x = (BiggerDouble) n;
-            for (int i = 0; i < x.getNumWholes(); i++) {
-                res.num.add((char) x.getWholeDigit(i));
-            } // for
-            res.normalize();
+            res.num.clear();
+            res.num.addAll(x.whole);
         } // if
         return res;
     } // valueOf
