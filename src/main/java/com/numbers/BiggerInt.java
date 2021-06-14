@@ -43,7 +43,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
             if (Character.isDigit(c)) {
                 num.add((char) Character.getNumericValue(c));
             } else {
-                throw new NumberFormatException("Could not convert String to an Integer");
+                throw new NumberFormatException("Could not convert String to an Integer.");
             } // if-else
         } // for-each
         if (num.size() == 0) {
@@ -122,7 +122,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
      * 
      * @param n the number to add to
      * @param nums the optional number(s) to be added
-     * @return
+     * @return the result of the sum(s)
      */
     public static BiggerInt add(final BiggerInt n, final BiggerInt... nums) {
         BiggerInt res = new BiggerInt(n);
@@ -191,7 +191,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
      * 
      * @param n the number to subtract from
      * @param nums the optional number(s) to be subtracted
-     * @return
+     * @return the result of the subtraction(s)
      */
     public static BiggerInt sub(final BiggerInt n, final BiggerInt... nums) {
         BiggerInt res = new BiggerInt(n);
@@ -243,7 +243,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
      * 
      * @param n the number to multiply to
      * @param nums the optional multiplier(s)
-     * @return
+     * @return the result of the multiplication(s)
      */
     public static BiggerInt mul(final BiggerInt n, final BiggerInt... nums) {
         BiggerInt res = new BiggerInt(n);
@@ -251,12 +251,15 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
             res.mul(x);
         } // for
         return res;
-    } // sub
+    } // mul
 
     @Override
-    public <T extends BiggerNum> void div(final T n) {
+    public <T extends BiggerNum> void div(final T n) throws ArithmeticException {
         if (n instanceof BiggerInt) {
             BiggerInt x = new BiggerInt((BiggerInt) n);
+            if (x.compareTo(new BiggerInt()) == 0) {
+                throw new ArithmeticException("Cannot divide by zero!");
+            } // if x = 0
             x.sign = 0; // makes sure comparisons are based on magnitude
             char saveSign = sign;
             sign = 0; // same as with x's sign
@@ -292,6 +295,34 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
         } // if-else
         normalize();
     } // div
+
+    /**
+     * Divides a given initial number by 0 or more numbers.
+     * 
+     * @param n the dividend
+     * @param nums the optional divisor(s)
+     * @return the result of the division(s)
+     */
+    public static BiggerInt div(final BiggerInt n, final BiggerInt... nums) {
+        BiggerInt res = new BiggerInt(n);
+        for (BiggerInt x : nums) {
+            res.div(x);
+        } // for
+        return res;
+    } // div
+
+    /**
+     * Finds the remainder when dividing n1 by n2.
+     * 
+     * @param n1 the dividend
+     * @param n2 the divisor
+     * @return the remainder
+     */
+    public static BiggerInt rem(final BiggerInt n1, final BiggerInt... n2) {
+        BiggerInt quotient = BiggerInt.div(n1, n2);
+        BiggerInt mult = BiggerInt.mul(quotient, n2);
+        return BiggerInt.sub(n1, mult);
+    } // rem
 
     /**
      * Removes leading zeros.

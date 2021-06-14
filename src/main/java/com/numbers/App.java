@@ -58,6 +58,9 @@ public class App {
                             n1.div(n2);
                             System.out.println("n1 / n2: " + n1);
                             break;
+                        case "%":
+                        case "rem":
+                            System.out.println("n1 % n2: " + BiggerInt.rem(n1, n2));
                         case "comp":
                             switch (n1.compareTo(n2)) {
                                 case 1:
