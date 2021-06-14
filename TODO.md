@@ -5,7 +5,7 @@ General list (NOT exhaustive) I may use to brainstorm
 - [x] add
 - [x] sub
 - [x] mult
-- [ ] div
+- [x] div
 - [x] compareTo
 - [ ] shift
 

@@ -66,7 +66,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
     @Override
     public <T extends BiggerNum> void add(final T n) {
         if (n instanceof BiggerInt) {
-            BiggerInt x = (BiggerInt) n;
+            BiggerInt x = new BiggerInt((BiggerInt) n);
             if (sign == 0 && x.sign == 1) { // if this number is positive but n is negative
                 /* (num + -x) = (num - x) */
                 x.sign = 0;
@@ -135,7 +135,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
     @Override
     public <T extends BiggerNum> void sub(final T n) {
         if (n instanceof BiggerInt) {
-            BiggerInt x = (BiggerInt) n;
+            BiggerInt x = new BiggerInt((BiggerInt) n);
             if (sign == 0 && x.sign == 1) { // if this number is positive but n is negative
                 /* (num - -x) = (num + x) */
                 x.sign = 0;
@@ -204,7 +204,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
     @Override
     public <T extends BiggerNum> void mul(final T n) {
         if (n instanceof BiggerInt) {
-            BiggerInt x = (BiggerInt) n;
+            BiggerInt x = new BiggerInt((BiggerInt) n);
             BiggerInt res = new BiggerInt();
             for (int l1 = getNumDigits(); l1 > 0; l1--) {
                 BiggerInt temp = new BiggerInt();
@@ -242,7 +242,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
      * Multiplies 0 or more given numbers with a given initial number.
      * 
      * @param n the number to multiply to
-     * @param nums the optional number(s) to multiply with
+     * @param nums the optional multiplier(s)
      * @return
      */
     public static BiggerInt mul(final BiggerInt n, final BiggerInt... nums) {
@@ -255,8 +255,42 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
 
     @Override
     public <T extends BiggerNum> void div(final T n) {
-        // TODO Auto-generated method stub
-
+        if (n instanceof BiggerInt) {
+            BiggerInt x = new BiggerInt((BiggerInt) n);
+            x.sign = 0; // makes sure comparisons are based on magnitude
+            char saveSign = sign;
+            sign = 0; // same as with x's sign
+            if (compareTo(x) != -1) { // if this number is greater than or equal to n
+                BiggerInt temp = new BiggerInt();
+                BiggerInt xMult = new BiggerInt();
+                temp.num.clear();
+                int count = 0;
+                for (int i = 0; i < num.size(); i++) {
+                    temp.num.add(num.get(i));
+                    int c = xMult.compareTo(temp);
+                    while (c == -1) {
+                        xMult.add(x);
+                        c = xMult.compareTo(temp);
+                        count++;
+                    } // while the divisor multiple is less than the temporary dividend
+                    if (c == 0) { // if the divisor multiple equals the temporary dividend
+                        temp.num.clear();
+                    } else { // if the divisor multiple is greater than the temporary dividend
+                        xMult.sub(x);
+                        count--;
+                        temp.sub(xMult); // remainder
+                    } // if-else
+                    num.set(i, (char) count);
+                } // for
+            } else { // if this number is less than n
+                num.clear();
+                num.add((char) 0);
+            } // if-else
+            sign = (char) (saveSign == n.sign ? 0 : 1); // positive if equal, negative otherwise
+        } else {
+            div(BiggerInt.valueOf(n));
+        } // if-else
+        normalize();
     } // div
 
     /**

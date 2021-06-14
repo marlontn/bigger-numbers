@@ -74,24 +74,9 @@ public class App {
                 } // while
             } else if (arr[0].equals("d")) {
                 BiggerDouble n1 = new BiggerDouble(arr[1]);
-                BiggerDouble n2 = new BiggerDouble(arr[2]);
-                System.out.println("n1: " + n1);
-                System.out.println("n2: " + n2);
-                /*
-                switch (n1.compareTo(n2)) {
-                    case 1:
-                        System.out.println("n1 > n2");
-                        break;
-                    case -1:
-                        System.out.println("n1 < n2");
-                        break;
-                    default:
-                        System.out.println("n1 == n2");
-                } // switch
-                */
-                n1.add(n2);
-                System.out.println("n1 + n2:" + n1);
-            } // if-else
+            } else if (arr[0].equals("h")) {
+                // TODO: show command list
+            }// if-else
         } // while
     } // main
 } // App
