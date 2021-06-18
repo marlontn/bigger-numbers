@@ -253,6 +253,11 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
         return res;
     } // mul
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @throws ArithmeticException if there is a divide-by-zero error
+     */
     @Override
     public <T extends BiggerNum> void div(final T n) throws ArithmeticException {
         if (n instanceof BiggerInt) {
@@ -341,8 +346,12 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
      * 
      * @param n the desired position
      * @return the digit at the given position
+     * @throws IndexOutOfBoundsException if the index is out of bounds
      */
-    public int getDigit(int n) {
+    public int getDigit(int n) throws IndexOutOfBoundsException {
+        if (n < 0 || n > getNumDigits()) {
+            throw new IndexOutOfBoundsException("Index is out of bounds.");
+        } // if the index is out of bounds
         return num.get(n);
     } // getDigit
 
@@ -367,7 +376,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
             BiggerDouble x = (BiggerDouble) n;
             res.num.clear();
             res.num.addAll(x.whole);
-        } // if
+        } // if n is a BiggerDouble
         return res;
     } // valueOf
 

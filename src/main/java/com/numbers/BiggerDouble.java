@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * 
  * @author marlontn
  */
-public class BiggerDouble extends BiggerNum {
+public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> {
     protected ArrayList<Character> whole;
     protected ArrayList<Character> decimal;
 
@@ -19,6 +19,7 @@ public class BiggerDouble extends BiggerNum {
     public BiggerDouble() {
         whole = new ArrayList<Character>();
         decimal = new ArrayList<Character>();
+        sign = 0;
         whole.add((char) 0);
         decimal.add((char) 0);
     } // BiggerDouble
@@ -33,14 +34,15 @@ public class BiggerDouble extends BiggerNum {
     } // BiggerDouble
 
     /**
-     * Creates a new integer and initializes it to the given <code>String</code> value.
+     * Creates a new double and initializes it to the given <code>String</code> value.
      * 
-     * @param n this integer's initial value
-     * @throws NumberFormatException if the given string cannot be converted to an integer
+     * @param n this double's initial value
+     * @throws NumberFormatException if the given string cannot be converted to a double
      */
     public BiggerDouble(String n) throws NumberFormatException {
         whole = new ArrayList<Character>();
         decimal = new ArrayList<Character>();
+        sign = 0;
         if (n.charAt(0) == '-') {
             sign = 1;
             n = n.substring(1);
@@ -69,9 +71,22 @@ public class BiggerDouble extends BiggerNum {
         normalize();
     } // BiggerDouble
 
+    /**
+     * Creates a new double and initializes it to hold the given BiggerDouble's digits.
+     * 
+     * @param n this double's initial value
+     */
+    public BiggerDouble(BiggerDouble n) {
+        whole = new ArrayList<Character>();
+        decimal = new ArrayList<Character>();
+        sign = 0;
+        whole.addAll(n.whole);
+        decimal.addAll(n.decimal);
+        sign = n.sign;
+    } // BiggerDouble
+
     @Override
     public void add(BiggerNum n) {
-        // TODO Auto-generated method stub
 
     } // add
 
@@ -87,6 +102,11 @@ public class BiggerDouble extends BiggerNum {
 
     } // mul
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @throws ArithmeticException if there is a divide-by-zero error
+     */
     @Override
     public void div(BiggerNum n) {
         // TODO Auto-generated method stub
@@ -99,10 +119,10 @@ public class BiggerDouble extends BiggerNum {
     public void normalize() {
         while (whole.size() > 1 && whole.get(0) == 0) {
             whole.remove(0);
-        } // while
+        } // while there are leading zeros in the whole-number part
         while (decimal.size() > 1 && decimal.get(decimal.size() - 1) == 0) {
             decimal.remove(decimal.size() - 1);
-        } // while
+        } // while there are trailing zeros in the decimal part
         if (whole.get(0) == 0 && decimal.get(0) == 0 && sign == 1) {
             sign = 0;
         } // if there is a negative sign for zero
@@ -113,8 +133,12 @@ public class BiggerDouble extends BiggerNum {
      * 
      * @param n the desired position
      * @return the digit at the given position
+     * @throws IndexOutOfBoundsException if the index is out of bounds
      */
-    public int getWholeDigit(int n) {
+    public int getWholeDigit(int n) throws IndexOutOfBoundsException {
+        if (n < 0 || n > getNumWholes()) {
+            throw new IndexOutOfBoundsException("Index is out of bounds.");
+        } // if the index is out of bounds
         return whole.get(n);
     } // getWholeDigit
 
@@ -123,8 +147,12 @@ public class BiggerDouble extends BiggerNum {
      * 
      * @param n the desired position
      * @return the digit at the given position
+     * @throws IndexOutOfBoundsException if the index is out of bounds
      */
-    public int getDecimalDigit(int n) {
+    public int getDecimalDigit(int n) throws IndexOutOfBoundsException {
+        if (n < 0 || n > getNumDecimals()) {
+            throw new IndexOutOfBoundsException("Index is out of bounds.");
+        } // if the index is out of bounds
         return decimal.get(n);
     } // getDecimalDigit
 
@@ -155,6 +183,22 @@ public class BiggerDouble extends BiggerNum {
         return decimal.size();
     } // getNumDecimals
 
+    /**
+     * Converts the given number into a BiggerDouble.
+     * 
+     * @param n the number to convert
+     * @return the given number as a BiggerDouble
+     */
+    public static <T extends BiggerNum> BiggerDouble valueOf(T n) {
+        BiggerDouble res = new BiggerDouble();
+        if (n instanceof BiggerInt) {
+            BiggerInt x = (BiggerInt) n;
+            res.whole.clear();
+            res.whole.addAll(x.num);
+        } // if n is a BiggerInt
+        return res;
+    } // valueOf
+
     @Override
     public String toString() {
         String str = "";
@@ -170,4 +214,9 @@ public class BiggerDouble extends BiggerNum {
         } // for
         return str;
     } // toString
+
+    @Override
+    public int compareTo(BiggerDouble n) {
+        return 0;
+    } // compareTo
 }
