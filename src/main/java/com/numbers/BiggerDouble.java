@@ -79,27 +79,72 @@ public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> 
     public BiggerDouble(BiggerDouble n) {
         whole = new ArrayList<Character>();
         decimal = new ArrayList<Character>();
-        sign = 0;
+
         whole.addAll(n.whole);
         decimal.addAll(n.decimal);
         sign = n.sign;
     } // BiggerDouble
 
     @Override
-    public void add(BiggerNum n) {
+    public <T extends BiggerNum> void add(final T n) {
 
     } // add
 
+    /**
+     * Adds 0 or more given numbers to a given initial number.
+     * 
+     * @param n the number to add to
+     * @param nums the optional number(s) to be added
+     * @return the result of the sum(s)
+     */
+    public static BiggerDouble add(final BiggerDouble n, final BiggerDouble... nums) {
+        BiggerDouble res = new BiggerDouble(n);
+        for (BiggerDouble x : nums) {
+            res.add(x);
+        } // for
+        return res;
+    } // add
+
     @Override
-    public void sub(BiggerNum n) {
+    public <T extends BiggerNum> void sub(final T n) {
         // TODO Auto-generated method stub
 
     } // sub
 
+    /**
+     * Subtracts 0 or more given numbers from a given initial number.
+     * 
+     * @param n the number to subtract from
+     * @param nums the optional number(s) to be subtracted
+     * @return the result of the subtraction(s)
+     */
+    public static BiggerDouble sub(final BiggerDouble n, final BiggerDouble... nums) {
+        BiggerDouble res = new BiggerDouble(n);
+        for (BiggerDouble x : nums) {
+            res.add(x);
+        } // for
+        return res;
+    } // sub
+
     @Override
-    public void mul(BiggerNum n) {
+    public <T extends BiggerNum> void mul(final T n) {
         // TODO Auto-generated method stub
 
+    } // mul
+
+    /**
+     * Multiplies 0 or more given numbers with a given initial number.
+     * 
+     * @param n the number to multiply to
+     * @param nums the optional multiplier(s)
+     * @return the result of the multiplication(s)
+     */
+    public static BiggerDouble mul(final BiggerDouble n, final BiggerDouble... nums) {
+        BiggerDouble res = new BiggerDouble(n);
+        for (BiggerDouble x : nums) {
+            res.add(x);
+        } // for
+        return res;
     } // mul
 
     /**
@@ -108,10 +153,38 @@ public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> 
      * @throws ArithmeticException if there is a divide-by-zero error
      */
     @Override
-    public void div(BiggerNum n) {
+    public <T extends BiggerNum> void div(final T n) throws ArithmeticException {
         // TODO Auto-generated method stub
 
     } // div
+
+    /**
+     * Divides a given initial number by 0 or more numbers.
+     * 
+     * @param n the dividend
+     * @param nums the optional divisor(s)
+     * @return the result of the division(s)
+     */
+    public static BiggerDouble div(final BiggerDouble n, final BiggerDouble... nums) {
+        BiggerDouble res = new BiggerDouble(n);
+        for (BiggerDouble x : nums) {
+            res.add(x);
+        } // for
+        return res;
+    } // div
+
+    /**
+     * Finds the remainder when dividing n1 by n2.
+     * 
+     * @param n1 the dividend
+     * @param n2 the divisor
+     * @return the remainder
+     */
+    public static BiggerDouble rem(final BiggerDouble n1, final BiggerDouble... n2) {
+        BiggerDouble quotient = BiggerDouble.div(n1, n2);
+        BiggerDouble mult = BiggerDouble.mul(quotient, n2);
+        return BiggerDouble.sub(n1, mult);
+    } // rem
 
     /**
      * Removes leading zeros (pre-decimal point) and trailing zeros (post-decimal point).
@@ -195,6 +268,7 @@ public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> 
             BiggerInt x = (BiggerInt) n;
             res.whole.clear();
             res.whole.addAll(x.num);
+            res.sign = x.sign;
         } // if n is a BiggerInt
         return res;
     } // valueOf
@@ -217,6 +291,27 @@ public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> 
 
     @Override
     public int compareTo(BiggerDouble n) {
+        BiggerInt x = BiggerInt.valueOf(this);
+        BiggerInt y = BiggerInt.valueOf(n);
+        int c = x.compareTo(y);
+        if (c != 0) {
+            return c;
+        } // if the whole number parts of n and this number are different
+
+        int l1 = getNumDecimals();
+        int l2 = n.getNumDecimals();
+        int i = 0;
+        for (; i < l1; i++) {
+            if (i >= l2 || decimal.get(i) > n.decimal.get(i)) {
+                return sign == 0 ? 1 : -1; // 0.2 > 0.1, but -0.2 < -0.1
+            } // if l1 > l2 or if this number's decimal digit at i is greater than n's
+            if (decimal.get(i) < n.decimal.get(i)) {
+                return sign == 0 ? -1 : 1; // 0.1 < 0.2, but -0.1 > -0.2
+            } // if this number's decimal digit at i is less than n's
+        } // for
+        if (i < l2) {
+            return sign == 0 ? -1 : 1;
+        } // if l2 > l1
         return 0;
     } // compareTo
 }

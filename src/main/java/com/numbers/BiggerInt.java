@@ -376,6 +376,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
             BiggerDouble x = (BiggerDouble) n;
             res.num.clear();
             res.num.addAll(x.whole);
+            res.sign = x.sign;
         } // if n is a BiggerDouble
         return res;
     } // valueOf

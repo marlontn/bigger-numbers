@@ -14,7 +14,8 @@ General list (NOT exhaustive) I may use to brainstorm
 - [ ] sub
 - [ ] mult
 - [ ] div
-- [ ] compareTo
+- [x] compareTo
+- [ ] equals (close to equal)
 
 ## BiggerBin
 - [ ] ???
