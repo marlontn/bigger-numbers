@@ -224,9 +224,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
                 if (carry > 0) {
                     temp.num.add(0, (char) carry);
                 } // if there is a leftover carry bit
-                for (int i = getNumDigits(); i > l1; i--) {
-                    temp.num.add((char) 0); // pads with zeroes to reflect shift
-                } // for
+                temp.shift(l1 - getNumDigits()); // pads with zeros
                 res.add(temp);
             } // for
             num.clear();
@@ -330,9 +328,46 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
     } // rem
 
     /**
+     * Shifts this number's digits by a specified amount. If n > 0, it shifts the digits to the
+     * right, with the n rightmost digits being removed (equivalent to num / 10^n). If n < 0, it
+     * shifts the digits to the left, padding with n zeros to the right (equivalent to num *
+     * 10^|n|). If n = 0, nothing is done.
+     * 
+     * @param n the shift amount
+     */
+    public void shift(int n) {
+        while (n > 0 && num.size() > 0) {
+            num.remove(num.size() - 1);
+            n--;
+        } // while/if there are n > 0 digits to shift right
+        while (n < 0) {
+            num.add((char) 0);
+            n++;
+        } // while/if there are |n| > 0 digits to shift left
+        normalize();
+    } // shift
+
+    /**
+     * Shifts this number's digits left once (equivalent to num * 10).
+     */
+    public void shiftLeft() {
+        shift(-1);
+    } // shiftLeft
+
+    /**
+     * Shifts this number's digits right once (equivalent to num / 10).
+     */
+    public void shiftRight() {
+        shift(1);
+    } // shiftRight
+
+    /**
      * Removes leading zeros.
      */
     public void normalize() {
+        if (num.size() == 0) {
+            num.add((char) 0);
+        } // if the numbmer has no digits
         while (num.size() > 1 && num.get(0) == 0) {
             num.remove(0);
         } // while there are leading zeros

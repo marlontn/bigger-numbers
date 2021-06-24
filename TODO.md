@@ -7,7 +7,8 @@ General list (NOT exhaustive) I may use to brainstorm
 - [x] mult
 - [x] div
 - [x] compareTo
-- [ ] shift
+- [x] shift
+- [ ] bit shift
 
 ## BiggerDouble
 - [ ] add
@@ -16,6 +17,7 @@ General list (NOT exhaustive) I may use to brainstorm
 - [ ] div
 - [x] compareTo
 - [ ] equals (close to equal)
+- [ ] shift
 
 ## BiggerBin
 - [ ] ???

@@ -34,6 +34,7 @@ public class App {
                         break;
                     } // if
                     BiggerInt n2 = new BiggerInt(op[1]);
+                    int n;
                     System.out.println("n1: " + n1);
                     System.out.println("n2: " + n2);
                     switch (op[0]) {
@@ -61,6 +62,17 @@ public class App {
                         case "%":
                         case "rem":
                             System.out.println("n1 % n2: " + BiggerInt.rem(n1, n2));
+                            break;
+                        case "sl":
+                            n = Integer.parseInt(op[1]);
+                            n1.shift(-n);
+                            System.out.println("n1 sl n2: " + n1);
+                            break;
+                        case "sr":
+                            n = Integer.parseInt(op[1]);
+                            n1.shift(n);
+                            System.out.println("n1 sr n2: " + n1);
+                            break;
                         case "comp":
                             switch (n1.compareTo(n2)) {
                                 case 1:
@@ -85,6 +97,7 @@ public class App {
                         break;
                     } // if
                     BiggerDouble n2 = new BiggerDouble(op[1]);
+                    int n;
                     System.out.println("n1: " + n1);
                     System.out.println("n2: " + n2);
                     switch (op[0]) {
@@ -112,6 +125,17 @@ public class App {
                         case "%":
                         case "rem":
                             System.out.println("n1 % n2: " + BiggerDouble.rem(n1, n2));
+                            break;
+                        case "sl":
+                            n = Integer.parseInt(op[1]);
+                            n1.shift(-n);
+                            System.out.println("n1 sl n2: " + n1);
+                            break;
+                        case "sr":
+                            n = Integer.parseInt(op[1]);
+                            n1.shift(n);
+                            System.out.println("n1 sr n2: " + n1);
+                            break;
                         case "comp":
                             switch (n1.compareTo(n2)) {
                                 case 1:
@@ -128,7 +152,7 @@ public class App {
                 } // while
             } else if (arr[0].equals("h")) {
                 // TODO: show command list
-            }// if-else
+            } // if-else
         } // while
     } // main
 } // App

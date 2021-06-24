@@ -190,6 +190,12 @@ public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> 
      * Removes leading zeros (pre-decimal point) and trailing zeros (post-decimal point).
      */
     public void normalize() {
+        if (whole.size() == 0) {
+            whole.add((char) 0);
+        } // if the numbmer has no whole digits
+        if (decimal.size() == 0) {
+            decimal.add((char) 0);
+        } // if the number has no decimal digits
         while (whole.size() > 1 && whole.get(0) == 0) {
             whole.remove(0);
         } // while there are leading zeros in the whole-number part
