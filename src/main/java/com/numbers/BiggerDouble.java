@@ -87,7 +87,28 @@ public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> 
 
     @Override
     public <T extends BiggerNum> void add(final T n) {
-
+        if (n instanceof BiggerInt) {
+            BiggerDouble x = new BiggerDouble((BiggerDouble) n);
+            if (sign == 0 && x.sign == 1) { // if this number is positive but n is negative
+                /* (num + -x) = (num - x) */
+                x.sign = 0;
+                sub(x);
+                x.sign = 1; // unnecessary but done for consistency
+            } else if (sign == 1 && x.sign == 0) { // if this number is negative but n is positive
+                /* (-num + x) = -(num + -x) = -(num - x) */
+                sign = 0;
+                sub(x);
+                sign = (char) (sign == 0 ? 1 : 0); // flips sign
+            } else { // if signs are the same
+                /* (num + x) = (num + x) */
+                /* (-num + -x) = -(num + x), where the sign bit is already negative */
+                addDecimals(x);
+                addWholes(x);
+            } // if-else
+        } else {
+            add(BiggerInt.valueOf(n));
+        } // if-else
+        normalize();
     } // add
 
     /**
@@ -104,6 +125,78 @@ public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> 
         } // for
         return res;
     } // add
+
+    /**
+     * Adds the decimal digits of another double to this double.
+     * 
+     * @param n the double whose decimal digits will be added
+     */
+    private void addDecimals(BiggerDouble n) {
+        int l1 = getNumDecimals() - 1;
+        int l2 = n.getNumDecimals() - 1;
+        while (l1 > l2) { // 0.123 + 0.1 -> 0.123 + 0.100
+            n.decimal.add((char) 0);
+            l2++;
+        } // while the lengths aren't equal
+        while (l2 > l1) { // 0.1 + 0.123 -> 0.100 + 0.123
+            decimal.add((char) 0);
+            l1++;
+        } // while the lengths aren't equal
+        int carry = 0;
+        for (int i = l1; i >= 0; i--) {
+            int res = decimal.get(i) + n.decimal.get(i);
+            if (carry == 1) {
+                res++;
+                carry = 0;
+            } // if there is a carry bit from the previous addition
+            if (res > 9) {
+                res %= 10;
+                carry = 1;
+            } // if there needs to be a carry bit
+            decimal.set(i, (char) res);
+        } // for
+        if (carry == 1) {
+            add(new BiggerDouble(1));
+        } // if the sum of the decimals is greater than 1 (can never be greater than 2)
+    } // addDecimals
+
+    /**
+     * Adds the whole digits of another double to this double.
+     * 
+     * @param n the double whose whole digits will be added
+     */
+    private void addWholes(BiggerDouble n) {
+        int l1 = getNumWholes() - 1;
+        int l2 = n.getNumWholes() - 1;
+        int carry = 0;
+        for (; l1 >= 0; l1--, l2--) {
+            int res = l2 >= 0 ? whole.get(l1) + n.whole.get(l2) : whole.get(l1);
+            if (carry == 1) {
+                res++;
+                carry = 0;
+            } // if there is a carry bit from the previous addition
+            if (res > 9) {
+                res %= 10;
+                carry = 1;
+            } // if there needs to be a carry bit
+            whole.set(l1, (char) res);
+        } // for
+        for (; l2 >= 0; l2--) {
+            int res = n.whole.get(l2);
+            if (carry == 1) {
+                res++;
+                carry = 0;
+            } // if there is a carry bit from the previous addition
+            if (res > 9) {
+                res %= 10;
+                carry = 1;
+            } // if there needs to be a carry bit
+            whole.add(0, (char) res);
+        } // for
+        if (carry == 1) {
+            whole.add(0, (char) 1);
+        } // if there is an extra carry bit
+    } // addWholes
 
     @Override
     public <T extends BiggerNum> void sub(final T n) {
@@ -188,9 +281,9 @@ public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> 
 
     /**
      * Shifts this number's digits by a specified amount. If n > 0, it shifts the digits to the
-     * right, moving the decimal point n places left (equivalent to num / 10^n). If n < 0, it
-     * shifts the digits to the left, moving the decimal point n places right (equivalent to num *
-     * 10^|n|). If n = 0, nothing is done.
+     * right, moving the decimal point n places left (equivalent to num / 10^n). If n < 0, it shifts
+     * the digits to the left, moving the decimal point n places right (equivalent to num * 10^|n|).
+     * If n = 0, nothing is done.
      * 
      * @param n the shift amount
      */
@@ -225,7 +318,7 @@ public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> 
     /**
      * Removes leading zeros (pre-decimal point) and trailing zeros (post-decimal point).
      */
-    public void normalize() {
+    private void normalize() {
         if (whole.size() == 0) {
             whole.add((char) 0);
         } // if the numbmer has no whole digits

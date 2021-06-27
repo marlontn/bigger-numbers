@@ -364,7 +364,7 @@ public class BiggerInt extends BiggerNum implements Comparable<BiggerInt> {
     /**
      * Removes leading zeros.
      */
-    public void normalize() {
+    private void normalize() {
         if (num.size() == 0) {
             num.add((char) 0);
         } // if the numbmer has no digits
