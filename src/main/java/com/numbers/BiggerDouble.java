@@ -187,6 +187,42 @@ public class BiggerDouble extends BiggerNum implements Comparable<BiggerDouble> 
     } // rem
 
     /**
+     * Shifts this number's digits by a specified amount. If n > 0, it shifts the digits to the
+     * right, moving the decimal point n places left (equivalent to num / 10^n). If n < 0, it
+     * shifts the digits to the left, moving the decimal point n places right (equivalent to num *
+     * 10^|n|). If n = 0, nothing is done.
+     * 
+     * @param n the shift amount
+     */
+    public void shift(int n) {
+        while (n > 0) {
+            char c = whole.size() > 0 ? whole.remove(whole.size() - 1) : 0;
+            decimal.add(0, c);
+            n--;
+        } // while there are n > 0 digits to shift right
+        while (n < 0) {
+            char c = decimal.size() > 0 ? decimal.remove(0) : 0;
+            whole.add(c);
+            n++;
+        } // while there are |n| > 0 digits to shift left
+        normalize();
+    } // shift
+
+    /**
+     * Shifts this number's digits left once (equivalent to num * 10).
+     */
+    public void shiftLeft() {
+        shift(-1);
+    } // shiftLeft
+
+    /**
+     * Shifts this number's digits right once (equivalent to num / 10).
+     */
+    public void shiftRight() {
+        shift(1);
+    } // shiftRight
+
+    /**
      * Removes leading zeros (pre-decimal point) and trailing zeros (post-decimal point).
      */
     public void normalize() {
